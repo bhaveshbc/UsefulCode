@@ -1,0 +1,68 @@
+class ShadowWithRedBluer : UIView {
+    
+    var inerGradiantView = UIView()
+    
+    var gradiant1Colour = AppColor.gradiantColor3.cgColor
+    var gradiant2Colour = AppColor.gradiantColor4.cgColor
+    var renderOnese = false
+    
+    private var shadowLayer: CAShapeLayer!
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func layoutSubviews() {
+        if !renderOnese {
+            ApplyCustomeView()
+//            renderOnese = true
+        }
+    }
+    
+   private func ApplyCustomeView() {
+        inerGradiantView.frame = self.bounds.insetBy(dx: 2, dy: 2)
+        self.insertSubview(inerGradiantView, at: 0)
+        let GradiantLayer = ApplyGradiantView(frame: self.bounds, Colors: [gradiant1Colour,gradiant2Colour], startPoint: CGPoint(x: 0.0, y: 0.0), endPoint: CGPoint(x: 0.8, y: 1.0))
+        if let gradiantLayer = GradiantLayer.GradiantLayer {
+            inerGradiantView.layer.insertSublayer(gradiantLayer, at: 0)
+        }
+        inerGradiantView.layer.cornerRadius = 20
+        inerGradiantView.clipsToBounds = true
+    
+        self.layer.applySketchShadow(color: UIColor.black, alpha: 0.15, x: 0, y: 50, blur: 50, spread: 0)
+    
+        self.backgroundColor = UIColor.clear
+    }
+    
+    
+    
+    
+}
+
+
+extension CALayer {
+    func applySketchShadow(
+        color: UIColor = .black,
+        alpha: Float = 0.5,
+        x: CGFloat = 0,
+        y: CGFloat = 2,
+        blur: CGFloat = 4,
+        spread: CGFloat = 0)
+    {
+        shadowColor = color.cgColor
+        shadowOpacity = alpha
+        shadowOffset = CGSize(width: x, height: y)
+        shadowRadius = blur / 2.0
+        if spread == 0 {
+            shadowPath = nil
+        } else {
+            let dx = -spread
+            let rect = bounds.insetBy(dx: dx, dy: dx)
+            shadowPath = UIBezierPath(rect: rect).cgPath
+        }
+    }
+}
