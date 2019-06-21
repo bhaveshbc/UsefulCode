@@ -1,0 +1,30 @@
+class blueGradiantView : UIView {
+    
+    var gradiant1Colour = AppColor.gradiantColor1.cgColor
+    var gradiant2Colour = AppColor.gradiantColor2.cgColor
+    
+    var renderOnese = false
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+    }
+    
+    override func layoutSubviews() {
+        if !renderOnese {
+            ApplyCustomeView()
+            renderOnese = true
+        }
+    }
+    
+    func ApplyCustomeView() {
+        let GradiantLayer = ApplyGradiantView(frame: self.bounds, Colors: [gradiant1Colour,gradiant2Colour], startPoint: CGPoint(x: 0.0, y: 0.0), endPoint: CGPoint(x: 0.8, y: 1.0))
+        if let gradiantLayer = GradiantLayer.GradiantLayer {
+            self.layer.insertSublayer(gradiantLayer, at: 0)
+        }
+    }
+}
